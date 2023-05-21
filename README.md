@@ -327,7 +327,7 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
     </details>
 
 - github push 후 에러를 인지하고, query문의 구조를 수정하였습니다.
-- ['최근 거래가(recent deal price)','즉시 구매가(buy now price)', '즉시 판매가(sell now price)']의 경우 재활용성을 고려하여 별도의 함수로 분리시켰습니다.
+- '최근 거래가(recent deal price)','즉시 구매가(buy now price)', '즉시 판매가(sell now price)'의 경우 재활용성을 고려하여 별도의 함수로 분리시켰습니다.
 - API를 작성할 때에는 반드시 다양한 환경에서 테스트를 해야 한다는 사실을 깨달았습니다.
 
 
@@ -378,7 +378,7 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
   ```
   <br>
 
-  - ['최근 거래가(recent deal price)','즉시 구매가(buy now price)', '즉시 판매가(sell now price)'] 도출 메서드
+  - '최근 거래가(recent deal price)','즉시 구매가(buy now price)', '즉시 판매가(sell now price)' 도출 메서드
 
   ```JavaScript
   //API/models/bidDao.js
