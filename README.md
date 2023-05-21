@@ -44,12 +44,12 @@ p2p 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 p2p �
 
 
  ## 📍[ERD](https://dbdiagram.io/d/64426bdf6b31947051f9b394)
- > User가 구매자이자 판매자가 될 수 있으며, 하나의 Product에 구매 입찰과 판매 입찰이 동시에 이루어진다는 점에 주안점을 두고 데이터베이스 모델 구축 <br><br>
+ > User가 구매자이자 판매자가 될 수 있으며, 하나의 Product에 구매 입찰과 판매 입찰이 동시에 이루어진다는 점에 주안점을 두고 데이터베이스 모델을 구축하였습니다. <br><br>
 ![DREAM (3)](https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/120387100/b18561e6-0888-4aaa-8eaa-452122d73e11)
 
 
  ## 📍[Postman](https://documenter.getpostman.com/view/26858291/2s93eWzskR)
-> Postman의 Documentation을 프로젝트 진행 시 프론트엔드와의 소통 및 협업 도구로 활용 <br><br>
+> Postman의 Documentation을 프로젝트 진행 시 프론트엔드와의 소통 및 협업 도구로 활용하였습니다. <br><br>
 <img width="1512" alt="스크린샷 2023-05-18 23 35 50" src="https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/120387100/3bff3e11-24d2-495c-81e4-f815da108948"><br>
 
  <br>
