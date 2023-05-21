@@ -55,8 +55,15 @@ p2p 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 p2p �
 
  <br>
  
+
  
- ## 핵심 기능
+ ## 📍핵심 기능
+ 
+ > p2p 경매 플랫폼으로서 갖추어야 할 필수 기능들을 구현 하였습니다.
+ 
+<details>
+<summary>핵심 기능 설명 펼치기</summary>
+<div markdown="1">
  
  ### Users
  **회원가입(Kakao Social Login)**<br>
@@ -252,8 +259,529 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
 - 쿼리가 성공적으로 완료되면 함수는 트랜잭션을 커밋하고, 그렇지 않은 경우 트랜잭션을 롤백하고 "DATABASE_ERROR" 메시지와 함께 DatabaseError를 발생시킴
   <br>
   
+  </div>
+</details>
+
 ***
- ## Reference
+
+ ## 📍핵심 트러블 슈팅
+ **1. 상품 상세 정보 호출 API - SELECT 쿼리문의 오사용**
+ - 상품 상제 정보 호출 API 작성 후 API가 잘 실행되는지 확인하는 과정에서 각 테이블에 데이터를 1개씩만 생성하고 테스트하여, SELECT 문 내 suq-query가 2개 이상의 row를 반환한다는 사실을 발견하지 못했습니다.
+ 
+    <details>
+    <summary>기존 코드</summary>
+    <div markdown="1">
+
+    ```JavaScript
+    //API/models/productDao.js
+    const productDetail = async (productId) => {
+      try {
+        const [productDetail] = await appDataSource.query(
+          `
+            SELECT 
+                p.name productName,
+                p.model_number modelNumber,
+                c.name categoryName,
+                p.original_price originalPrice,
+                pi.url imageUrl,
+                pa.age productAge,
+                pl.level productLevel,
+                (SELECT 
+                    b.bid_price
+                FROM buyings b
+                JOIN deals d
+                ON d.buying_id = b.id
+                WHERE d.created_at = (SELECT max(created_at) FROM deals)) recentDealPrice,
+                (SELECT 
+                    bid_price
+                FROM sellings
+                WHERE bid_price = (SELECT min(bid_price) FROM sellings WHERE bid_status_id = 1)) buyNowPrice,
+                (SELECT 
+                    bid_price
+                FROM buyings
+                WHERE bid_price = (SELECT max(bid_price) FROM buyings WHERE bid_status_id = 1)) sellNowPrice,
+                (SELECT 
+                  COUNT(user_id)
+                FROM likes
+                GROUP BY product_id) likeCount
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+            JOIN product_images pi ON p.id = pi.product_id
+            JOIN product_ages pa ON p.product_age_id = pa.id
+            JOIN product_levels pl ON p.product_level_id = pl.id
+            LEFT JOIN buyings b ON b.product_id = p.id
+            LEFT JOIN sellings s ON s.product_id = p.id
+            LEFT JOIN likes l ON l.product_id = p.id
+            WHERE p.id = ?
+        `,
+          [productId]
+        );
+        return productDetail;
+      } catch (err) {
+        err.message = 'DATABASE_ERROR';
+        err.statusCode = 400;
+        throw err;
+      }
+    };
+    ```
+    </div>
+    </details>
+
+- github push 후 에러를 인지하고, query문의 구조를 수정하였습니다.
+- ['최근 거래가(recent deal price)','즉시 구매가(buy now price)', '즉시 판매가(sell now price)']의 경우 재활용성을 고려하여 별도의 함수로 분리시켰습니다.
+- API를 작성할 때에는 반드시 다양한 환경에서 테스트를 해야한다는 사실을 깨달았습니다.
+
+
+  <details>
+  <summary>수정된 코드</summary>
+  <div markdown="1">
+
+  - 상품 상세 정보 호출 함수 ('최근 거래가(recent deal price)','즉시 구매가(buy now price)', '즉시 판매가(sell now price)' 제외)
+
+  ```JavaScript
+  //API/models/productDao.js
+  //3가지 금액 정보를 제외한 상품 디테일 정보 호출 함수 최종 ver.
+
+  const productDetail = async (productId) => {
+    try {
+      const [productDetail] = await appDataSource.query(
+        `
+          SELECT 
+              p.id productId,
+              p.name productName,
+              p.model_number modelNumber,
+              c.name categoryName,
+              p.original_price originalPrice,
+              pi.url imageUrl,
+              pa.age productAge,
+              pl.level productLevel,
+              l.likeCount
+          FROM products p
+          JOIN categories c ON p.category_id = c.id
+          JOIN product_images pi ON p.id = pi.product_id
+          JOIN product_ages pa ON p.product_age_id = pa.id
+          JOIN product_levels pl ON p.product_level_id = pl.id
+          LEFT JOIN (SELECT 
+              product_id,
+              COUNT(id) likeCount
+           FROM likes
+           GROUP BY product_id) l ON l.product_id = p.id
+          WHERE p.id = ?
+                `,
+        [productId]
+      );
+      return productDetail;
+    } catch (err) {
+      throw new DatabaseError('DATABASE_ERROR');
+    }
+  };
+
+  ```
+  <br>
+
+  - ['최근 거래가(recent deal price)','즉시 구매가(buy now price)', '즉시 판매가(sell now price)'] 도출 메서드
+
+  ```JavaScript
+  //API/models/bidDao.js
+  const appDataSource = require('./appDataSource');
+  const { bidStatusEnum } = require('./enum');
+  const { DatabaseError } = require('../utils/error');
+
+  class BidCase {
+    constructor(productId, bidType, bidPrice) {
+      this.bidType = bidType;
+      this.bidPrice = bidPrice;
+      this.productId = productId;
+      this.counterpart = bidType == 'buying' ? 'selling' : 'buying';
+      this.commissionRate = bidType == 'buying' ? 0.02 : 0.05;
+      this.table = `${bidType}s`;
+      this.counterTable = `${this.counterpart}s`;
+      this.minOrMax = this.counterpart == 'selling' ? 'min' : 'max';
+      this.appDataSource = appDataSource;
+    }
+
+   async nowPriceSetter(productIdValue, table, minOrMax) {
+      try {
+        const [bidPrice] = await this.appDataSource.query(
+          ` 
+          SELECT 
+              bid_price bidPrice
+          FROM ${table}
+          WHERE bid_price = (
+            SELECT ${minOrMax}(bid_price) 
+            FROM ${table} 
+            WHERE bid_status_id = ${bidStatusEnum.bid} 
+            AND product_id = ${productIdValue}) 
+          `
+        );
+
+        if (bidPrice == undefined) {
+          return null;
+        }
+
+        return parseFloat(Object.values(bidPrice));
+      } catch (err) {
+        throw new DatabaseError('DATABASE_ERROR');
+      }
+    }
+
+    getBuyNowPrice() {
+      return this.nowPriceSetter(this.productId, 'sellings', 'min');
+    }
+
+    getSellNowPrice() {
+      return this.nowPriceSetter(this.productId, 'buyings', 'max');
+    }
+
+    async getNowPrice() {
+      return this.nowPriceSetter(
+        this.productId,
+        this.counterTable,
+        this.minOrMax
+      );
+    }
+
+    async getRecentDealPrice() {
+      try {
+        const [bidPrice] = await this.appDataSource.query(
+          ` 
+              SELECT 
+                  b.bid_price AS bidPrice
+              FROM deals d
+              JOIN buyings b ON b.id = d.buying_id
+              WHERE d.created_at = 
+              (SELECT max(d.created_at) 
+              FROM deals 
+              JOIN buyings b ON b.id = d.buying_id 
+              WHERE b.product_id = ${this.productId}) 
+              AND b.product_id = ${this.productId}
+              ORDER BY d.created_at DESC
+              `
+        );
+
+        if (bidPrice == undefined) {
+          return null;
+        }
+
+        return parseFloat(Object.values(bidPrice));
+      } catch (err) {
+        throw new DatabaseError('DATABASE_ERROR');
+      }
+    }
+   };
+  ```
+  <br>
+
+  - 정보 합하여 전달하는 producService 내 함수
+
+  ```JavaScript
+  //API/services/productService.js
+  const productDao = require('../models/productDao');
+  const { BaseError } = require('../utils/error');
+  const { BidCase } = require('../models/bidDao');
+
+  const getProductDetail = async (productId) => {
+    const checkProductId = await productDao.isExistingProduct(productId);
+
+    if (!checkProductId) {
+      throw new BaseError('PRODUCT_DOES_NOT_EXIST', 404);
+    }
+
+    const productDetail = await productDao.productDetail(productId);
+    const bidCase = new BidCase(productId);
+
+    productDetail.buyNowPrice = await bidCase.getBuyNowPrice();
+    productDetail.sellNowPrice = await bidCase.getSellNowPrice();
+    productDetail.recentDealPrice = await bidCase.getRecentDealPrice();
+    productDetail.recentDealPrice == null
+      ? (productDetail.premiumPercent = null)
+      : (productDetail.premiumPercent = (
+          ((productDetail.recentDealPrice - productDetail.originalPrice) /
+            productDetail.originalPrice) *
+          100
+        ).toFixed(1));
+
+    return productDetail;
+  };
+  ```
+  </div>
+  </details>
+ **2. 경매 입찰 API - API class화**
+ - 구매 입찰'과 '판매 입찰'을 모두 처리할 수 있는 하나의 API를 작성하고자 했습니다.
+ - 처음에는 함수와 객체를 활용하여 필요 시 함수의 인자로 적절한 값을 객체의 property에서 불러와 사용하고자 했습니다.
+ - 그러나 각 경우에 따라서 달라져야 변수가 많아 여러 객체를 참조하게 되면서 코드의 가독성이 떨어지고 복잡성이 높아진다고 판단하였습니다.
+ - 고안해낸 방법이 class를 활용하여 property와 메서드를 한 번에 활용하는 방안이었습니다.
+    <details>
+    <summary>작성한 코드</summary>
+    <div markdown="1">
+      
+      - bidDao 내 입찰 관련 로직을 처리하는 class
+      
+      ```JavaScript
+      //API/models/bidDao.js
+
+      class BidCase {
+        constructor(productId, bidType, bidPrice = null, dueDate = null, userId) {
+          this.bidType = bidType;
+          this.bidPrice = bidPrice;
+          this.productId = productId;
+          this.counterpart = bidType == 'buying' ? 'selling' : 'buying';
+          this.commissionRate = bidType == 'buying' ? 0.02 : 0.05;
+          this.counterCommissionRate = bidType == 'buying' ? 0.05 : 0.02;
+          this.table = `${bidType}s`;
+          this.counterTable = `${this.counterpart}s`;
+          this.minOrMax = this.counterpart == 'selling' ? 'min' : 'max';
+          this.dueDate = dueDate;
+          this.userId = userId;
+          this.appDataSource = appDataSource;
+        }
+
+        async nowPriceSetter(productIdValue, table, minOrMax) {
+          try {
+            const [bidPrice] = await this.appDataSource.query(
+              ` 
+              SELECT 
+                  bid_price bidPrice
+              FROM ${table}
+              WHERE bid_price = (
+                SELECT ${minOrMax}(bid_price) 
+                FROM ${table} 
+                WHERE bid_status_id = ${bidStatusEnum.bid} 
+                AND product_id = ${productIdValue}) 
+              `
+            );
+
+            if (bidPrice == undefined) {
+              return null;
+            }
+
+            return parseFloat(Object.values(bidPrice));
+          } catch (err) {
+            throw new DatabaseError('DATABASE_ERROR');
+          }
+        }
+
+        getBuyNowPrice() {
+          return this.nowPriceSetter(this.productId, 'sellings', 'min');
+        }
+
+        getSellNowPrice() {
+          return this.nowPriceSetter(this.productId, 'buyings', 'max');
+        }
+
+        async getNowPrice() {
+          return this.nowPriceSetter(
+            this.productId,
+            this.counterTable,
+            this.minOrMax
+          );
+        }
+
+        async getRecentDealPrice() {
+          try {
+            const [bidPrice] = await this.appDataSource.query(
+              ` 
+                  SELECT 
+                      b.bid_price AS bidPrice
+                  FROM deals d
+                  JOIN buyings b ON b.id = d.buying_id
+                  WHERE d.created_at = 
+                  (SELECT max(d.created_at) 
+                  FROM deals 
+                  JOIN buyings b ON b.id = d.buying_id 
+                  WHERE b.product_id = ${this.productId}) 
+                  AND b.product_id = ${this.productId}
+                  ORDER BY d.created_at DESC
+                  `
+            );
+
+            if (bidPrice == undefined) {
+              return null;
+            }
+
+            return parseFloat(Object.values(bidPrice));
+          } catch (err) {
+            throw new DatabaseError('DATABASE_ERROR');
+          }
+        }
+
+        async isNowPrice() {
+          const nowPrice = await this.getNowPrice();
+          if (
+            nowPrice &&
+            ((this.bidType == 'buying' && this.bidPrice - nowPrice >= 0) ||
+              (this.bidType == 'selling' && this.bidPrice - nowPrice <= 0))
+          ) {
+            this.bidPrice = nowPrice;
+
+            return this.bidPrice;
+          }
+
+          return false;
+        }
+
+        async isExistingBid() {
+          try {
+            const [result] = await appDataSource.query(
+              `SELECT EXISTS (
+                  SELECT
+                  id
+                  FROM ${this.table}
+                  WHERE user_id = ${this.userId} 
+                  AND product_id = ${this.productId} 
+                  AND bid_status_id = ${bidStatusEnum.bid}
+                  ) existing 
+                  `
+            );
+            return !!parseInt(result.existing);
+          } catch (err) {
+            throw new DatabaseError('DATABASE_ERROR');
+          }
+        }
+
+        async biddingIn() {
+          const queryRunner = this.appDataSource.createQueryRunner();
+          await queryRunner.connect();
+          await queryRunner.startTransaction();
+          try {
+            await this.isNowPrice();
+            if (await this.isExistingBid()) {
+              await queryRunner.query(
+                `UPDATE ${this.table}
+              SET bid_price = ?,
+                  due_date = ?
+              WHERE user_id = ? 
+              AND product_id = ? 
+              AND bid_status_id = ?`,
+                [
+                  this.bidPrice,
+                  this.dueDate,
+                  this.userId,
+                  this.productId,
+                  bidStatusEnum.bid,
+                ]
+              );
+
+              const [bidding] = await queryRunner.query(
+                `SELECT
+                  id
+              FROM ${this.table}
+              WHERE user_id = ${this.userId} 
+              AND product_id = ${this.productId} 
+              AND bid_status_id = ${bidStatusEnum.bid}
+              `
+              );
+              this.biddingId = bidding.id;
+            } else {
+              const bidding = await queryRunner.query(
+                ` INSERT INTO ${this.table} (
+                      product_id,
+                      bid_price,
+                      due_date,
+                      user_id
+                      )
+                      VALUES (?, ?, ?, ?)`,
+                [this.productId, this.bidPrice, this.dueDate, this.userId]
+              );
+
+              this.biddingId = bidding.insertId;
+            }
+
+            if (!(await this.isNowPrice())) {
+              await queryRunner.commitTransaction();
+              return;
+            }
+
+            const [partner] = await queryRunner.query(
+              `SELECT
+              id,
+              user_id userId 
+              FROM ${this.counterTable}
+              WHERE updated_at = 
+              (SELECT 
+                  min(updated_at)
+              FROM ${this.counterTable}
+              WHERE product_id = ${this.productId} 
+              AND bid_price = ${this.bidPrice} 
+              AND bid_status_id = ${bidStatusEnum.bid})
+              AND product_id = ${this.productId} 
+              AND bid_price = ${this.bidPrice} 
+              AND bid_status_id = ${bidStatusEnum.bid}
+              ORDER BY updated_at`
+            );
+
+            if (partner.userId == this.userId) {
+              throw new DatabaseError('SAME_USER_WITH_COUNTERPART');
+            }
+
+            await queryRunner.query(
+              `UPDATE ${this.table} t
+              JOIN ${this.counterTable} c
+              SET t.bid_status_id = ${bidStatusEnum.deal},
+                  c.bid_status_id = ${bidStatusEnum.deal}
+              WHERE t.id = ${this.biddingId} 
+              AND c.id = ${partner.id}`
+            );
+
+            const dealInput = await queryRunner.query(
+              ` INSERT INTO deals (
+                  ${this.bidType + '_id'},
+                  ${this.counterpart + '_id'},
+                  ${this.bidType + '_commission'},
+                  ${this.counterpart + '_commission'}
+                  )
+                  VALUES (?, ?, ?, ?)`,
+              [
+                this.biddingId,
+                partner.id,
+                this.commissionRate * this.bidPrice,
+                this.counterCommissionRate * this.bidPrice,
+              ]
+            );
+
+            [this.dealInfo] = await queryRunner.query(
+              `
+              SELECT
+                  id,
+                  deal_number dealNumber
+              FROM deals
+              WHERE id = ?`,
+              [dealInput.insertId]
+            );
+
+            await queryRunner.commitTransaction();
+
+            return;
+          } catch (err) {
+            await queryRunner.rollbackTransaction();
+            err.message = err.message || 'DATABASE_ERROR';
+            err.statusCode = 400;
+            throw err;
+          } finally {
+            await queryRunner.release();
+          }
+        }
+      ```
+      - bidDao의 class를 실행시키는 bidService
+                                                                          
+      ```JavaScript
+      //API/services/bidService.js
+      const inputBidPrice = async (productId, bidType, bidPrice, dueDate, userId) => {
+        const bidCase = new BidCase(productId, bidType, bidPrice, dueDate, userId);
+
+        return await bidCase.biddingIn();
+      };
+      ``` 
+    </div>
+    </details>
+    
+  - class를 깊이 학습하는 계기가 되었습니다.
+  
+<br>
+  
+  ***
+    
+ ## 📍Reference
 
 - 이 프로젝트는 [KREAM](https://kream.co.kr/) 사이트를 참조하여 학습목적으로 만들었습니다.
 - 실무수준의 프로젝트이지만 학습용으로 만들었기 때문에 이 코드를 활용하여 이득을 취하거나 무단 배포할 경우 법적으로 문제될 수 있습니다.
