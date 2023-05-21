@@ -505,6 +505,9 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
   ```
   </div>
   </details>
+  
+  <br>
+  
  **2. 경매 입찰 API - API class화**
  - 구매 입찰'과 '판매 입찰'을 모두 처리할 수 있는 하나의 API를 작성하고자 했습니다.
  - 처음에는 함수와 객체를 활용하여 필요 시 함수의 인자로 적절한 값을 객체의 property에서 불러와 사용하고자 했습니다.
