@@ -328,7 +328,7 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
 
 - github push 후 에러를 인지하고, query문의 구조를 수정하였습니다.
 - ['최근 거래가(recent deal price)','즉시 구매가(buy now price)', '즉시 판매가(sell now price)']의 경우 재활용성을 고려하여 별도의 함수로 분리시켰습니다.
-- API를 작성할 때에는 반드시 다양한 환경에서 테스트를 해야한다는 사실을 깨달았습니다.
+- API를 작성할 때에는 반드시 다양한 환경에서 테스트를 해야 한다는 사실을 깨달았습니다.
 
 
   <details>
@@ -471,7 +471,7 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
   ```
   <br>
 
-  - 정보 합하여 전달하는 producService 내 함수
+  - 정보를 하나의 객체로 합하여 전달하는 producService 내 함수
 
   ```JavaScript
   //API/services/productService.js
@@ -510,7 +510,7 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
   
  **2. 경매 입찰 API - API class화**
  - 구매 입찰'과 '판매 입찰'을 모두 처리할 수 있는 하나의 API를 작성하고자 했습니다.
- - 처음에는 함수와 객체를 활용하여 필요 시 함수의 인자로 적절한 값을 객체의 property에서 불러와 사용하고자 했습니다.
+ - 처음에는 함수와 객체를 활용하여 필요시 함수의 인자로 적절한 값을 객체의 property에서 불러와 사용하고자 했습니다.
  - 그러나 각 경우에 따라서 달라져야 변수가 많아 여러 객체를 참조하게 되면서 코드의 가독성이 떨어지고 복잡성이 높아진다고 판단하였습니다.
  - 고안해낸 방법이 class를 활용하여 property와 메서드를 한 번에 활용하는 방안이었습니다.
     <details>
