@@ -130,10 +130,10 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
 
  **10. 리뷰 CRUD**
  
- - 생성: multer-3와 multer를 이용하여 서버 측에서 AWS의 S3에 사진을 올려 사진 리뷰 게시가 가능하도록 했습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/routes/reviewRouter.js#L9)
- - 조회: 리뷰 조회 시 productId를 사용하여 데이터베이스에서 제품에 대한 리뷰를 검색합니다. users 및 review_images 테이블과 LEFT JOIN 하여 데이터를 반환합니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/reviewDao.js#L5)
- - 수정: 유효한 reviewId인지 확인 후 리뷰가 수정되도록 했습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/services/reviewService.js#L24)
- - 삭제: 리뷰와 리뷰 이미지 삭제에 대해 transaction 처리 하였습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/reviewDao.js#L64)
+ - **생성:** multer-3와 multer를 이용하여 서버 측에서 AWS의 S3에 사진을 올려 사진 리뷰 게시가 가능하도록 했습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/routes/reviewRouter.js#L9)
+ - **조회:** 리뷰 조회 시 productId를 사용하여 데이터베이스에서 제품에 대한 리뷰를 검색합니다. users 및 review_images 테이블과 LEFT JOIN 하여 데이터를 반환합니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/reviewDao.js#L5)
+ - **수정:** 유효한 reviewId인지 확인 후 리뷰가 수정되도록 했습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/services/reviewService.js#L24)
+ - **삭제:** 리뷰와 리뷰 이미지 삭제에 대해 transaction 처리 하였습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/reviewDao.js#L64)
 
   <br>
   
