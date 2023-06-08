@@ -1,6 +1,6 @@
 # Dream - Backend
 
-> **위코드 44기 2차 프로젝트 <br>
+**위코드 44기 2차 프로젝트 <br>
 c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 플랫폼 웹사이트 제작<br>
 [결과물 시연 영상 링크](https://www.youtube.com/watch?v=UFuS91VcVp8)**
 
@@ -21,21 +21,21 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
 
 ## 2. 사용 기술
 
-* BackEnd <br><br>
+* **BackEnd** <br>
 
- JavaScript <br>
- Node.js v16.15 <br>
- express 4.18 <br>
- Jest 29.5 <br>
- MySql 5.7 <br>
- Rest <br>
- Prettier <br>
- Docker <br>
- AWS <br>
+   JavaScript <br>
+   Node.js v16.15 <br>
+   express 4.18 <br>
+   Jest 29.5 <br>
+   MySql 5.7 <br>
+   Rest <br>
+   Prettier <br>
+   Docker <br>
+   AWS <br>
  
 <br>
 
-* 협업 <br><br>
+* **협업** <br>
 
   Git & Git hub <br>
   Trello <br>
@@ -59,12 +59,14 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
 <summary>핵심 기능 설명 펼치기</summary>
 <div markdown="1">
  
+<br>
+  
  **1. 회원가입/로그인(Kakao Social Login)** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/669cc7d2ba9331583cc76f30c1f8cf3e2cda6e40/API/services/userService.js#L6)
  - KaKao에서 제공하는 API를 활용하여 user 회원 가입, 로그인 기능을 구현했습니다.
  
  <br>
  
-** 2. 상품 리스트 (필터/정렬)** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/669cc7d2ba9331583cc76f30c1f8cf3e2cda6e40/API/models/productDao.js#L57)
+**2. 상품 리스트 (필터/정렬)** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/669cc7d2ba9331583cc76f30c1f8cf3e2cda6e40/API/models/productDao.js#L57)
   
 - query parameter로 필터 및 정렬 조건을 전달 받아, 그에 따라 상품 리스트를 응답하는 API입니다.
 - 좋아요 많은 순, 즉시 구매가 순, 즉시 판매가 순, 리뷰 순, 프리미엄 가격 순으로 정렬이 가능합니다.
@@ -83,11 +85,11 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
 
 **4. 입찰** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a51ad73eea353c5395936e41337ced2c525ba9d9/API/models/bidDao.js#L126)
 
-- [상품 productId, 구매/판매 중 해당하는 입찰 유형, 입찰 금액, 입찰 마감 기한]을 request의 body로 전달받아 입찰 내역이 기록되는 API입니다.
-- [구매 입찰, 즉시 구매, 판매 입찰, 즉시 판매] 네 가지 경우에 모두 사용할 수 있습니다.
+- `상품 productId`, `구매/판매 중 해당하는 입찰 유형`, `입찰 금액`, `입찰 마감 기한`을 request의 body로 전달받아 입찰 내역이 기록되는 API입니다.
+- `구매 입찰`, `즉시 구매`, `판매 입찰`, `즉시 판매` 네 가지 경우에 모두 사용할 수 있습니다.
 - userId는 token의 payload에 저장된 정보를 이용합니다.
 - 입찰 금액에 따라 즉시 거래가 성사 될 수 있습니다.
-- 즉시 거래가 성사되는 경우, transaction을 사용하여 [거래 건 생성, 입찰 상태를 낙찰로 변경, 거래 상대방의 입찰 내역도 낙찰 상태로 변경] 등의 처리가 동시에 이루어지도록 했습니다.
+- 즉시 거래가 성사되는 경우, transaction을 사용하여 `거래 건 생성`, `입찰 상태를 낙찰로 변경`, `거래 상대방의 입찰 내역도 낙찰 상태로 변경` 등의 처리가 동시에 이루어지도록 했습니다.
 - 해당 user와 상품에 대해 기존 입찰 내역이 존재할 경우 '금액' 혹은 '입찰 기한'이 변경되도록 하여, 입찰 건 생성 외에도 입찰 내역 업데이트에 본 API가 사용될 수 있습니다.
 <br>
  
@@ -101,102 +103,38 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
  
  <br>
 
- **상품 검색**
+ **6. 상품 검색** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/searchDao.js#L4)
  
- : 상품 검색 기능 API
- - keyword에 상품명 또는 basic, building, movie, car 등의 카테고리 명 기입 시 검색됨
+ - keyword에 상품명 또는 basic, building, movie, car 등의 카테고리 명 기입 시 검색됩니다.
  
- **인기 검색어**
- :누적 인기검색어 조회 API
- - 검색어 데이터를 역대 검색량 순으로 정렬하여 상위 10개의 검색어 응답
+  <br>
+  
+ **7. 인기 검색어**
+ - 누적 인기검색어를 조회하는 API입니다.
+ - 검색 시 키워드별 검색량이 누적됩니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/searchDao.js#L32)
+ - 검색어 데이터를 역대 검색량 순으로 정렬하여 상위 10개의 검색어를 응답합니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/searchDao.js#L48)
 
   <br>
   
- ***
+**8. 관심상품 등록/삭제** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/services/likeService.js#L3)
+- path parameter로 productId를 받아 해당 유저의 관심상품으로 등록합니다.
+- 동일한 product와 동일한 user에 대해 API가 재실행될 경우 관심상품에서 삭제합니다.
+  
+  <br>
 
- ### Likes
-
-
-**관심상품 등록/삭제**<br>
-: 관심상품 등록/삭제 API
-- path parameter로 productId를 받아 해당 유저의 관심상품 생성
-- 동일한 product와 동일한 user에 대해 API가 재실행될 경우 관심상품 삭제 <br>
-
-**관심상품 리스트**<br>
-: user별로 관심 상품 리스트를 조회하는 API
-- 경매플랫폼이기 때문에 즉시구매가와 함께 관심상품 리스트를 보여줌
-
- <br>
+ **9. 리뷰 CRUD**
  
-   ***
- 
- ### Reviews
+ - 생성: multer-3와 multer를 이용하여 서버 측에서 AWS의 S3에 사진을 올려 사진 리뷰 게시가 가능하도록 했습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/routes/reviewRouter.js#L9)
+ - 조회: 리뷰 조회 시 productId를 사용하여 데이터베이스에서 제품에 대한 리뷰를 검색합니다. users 및 review_images 테이블과 LEFT JOIN 하여 데이터를 반환합니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/reviewDao.js#L5)
+ - 수정: 유효한 reviewId인지 확인 후 리뷰가 수정되도록 했습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/services/reviewService.js#L24)
+ - 삭제: 리뷰와 리뷰 이미지 삭제에 대해 transaction 처리 하였습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/reviewDao.js#L64)
 
-
- **리뷰 게시**<br>
- 
- :리뷰를 게시하는는 API
- - multer-3와 multer를 이용하여 s3에 사진을 올려 사진리뷰를 게시 가능하도록 함 <br>
- 
- **리뷰 조회**<br>
- : 사용자가 작성한 리뷰를 불러오는 API
- - productId를 사용하여 데이터베이스에서 제품에 대한 리뷰를 검색
- - appDataSource 개체를 사용하여 SQL 쿼리를 실행하여 reviews 테이블에서 특정 필드를 선택하고 users 및review_images 테이블과 LEFT JOIN 함
- - 제공된 product_id를 기반으로 결과를 필터링
- - 쿼리가 성공하면 함수는 검색된 데이터를 반환하고, 그렇지 않은 경우 "DATABASE_ERROR" 메시지와 함께 DatabaseError가 발생하게 함 <br>
- 
- **리뷰 수정**<br>
- : 리뷰를 업데이트(수정)를 할 수 있는 API
- - reviewId를 확인하고, 존재하는 reviewId라면 리뷰 수정 가능
- - reviewImg는 사용자가 이미지를 지우고 싶다면 데이터베이스에서 s3 해당 이미지의 url이 삭제 되도록 구현함 <br>
- 
- **리뷰 삭제**<br>
- : 사용자가 작성한 리뷰를 삭제할 수 있는 API
- - appDataSource 객체를 사용하여 SQL 쿼리를 실행하는 queryRunner를 생성하여 트랜잭션 내에서 리뷰와 해당 이미지를 삭제함
- - 프로세스 중에 오류가 발생하면 함수는 트랜잭션을 롤백하고 "DATABASE_ERROR" 메시지와 함께 DatabaseError를 발생시킴 <br>
   <br>
   
-  ***
+  **10. 결제/정산 완료 상태 업데이트** 📌코드 확인 - [판매](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/paymentDao.js#L100), [구매](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/paymentDao.js#L169)
+  - 즉시 구매 후 client가 결제 완료 요청을 보내면, 거래 상태를 `결제 완료`로 업데이트합니다. 
+  - 즉시 판매가 체결되면 구매자의 `결제 대기`로 상태를 업데이트 합니다.
   
- ### Payment
-
-
-**회원 주소 저장**<br>
-: 배송지로 사용될 회원의 주소 저장 API <br>
-
-**회원 계좌번호 & 카드번호 저장**<br>
-: 회원의 신규 입력된 계좌번호/카드 번호 저장 API
-- 판매 입찰 절차 중, user의 카드 번호 및 계좌 번호 입력 과정에서 신규 계좌/카드 번호 등록 시 사용됨
-- userId는 token의 payload에 저장된 정보를 이용함 <br>
-
-**회원별 계좌번호/카드번호 리스트**<br>
-:  회원별 등록된 계좌번호/카드번호 조회 API
-- 판매 입찰 절차 중, user의 계좌 번호/카드 번호 입력 과정에서 기 입력된 카드 번호 list를 불러오는 기능
-- userId는 token의 payload에 저장된 정보를 이용함 <br>
-
-**즉시 구매 결제**<br>
-: 거래가 성사되었을 때 구매자의 결제 진행 시 사용되는 API
-- 'dealNumber'를 사용하여 데이터베이스에서 구매 거래에 대한 결제 정보를 검색
-- buyings 테이블에 addressId를 추가하고 deals 테이블에서 deal_status를 결제 완료로 변경 <br>
-
-**즉시 판매 정산**<br>
-: 거래가 성사되었을 때 판매자의 정산 진행 시 사용되는 API
-- 'dealNumber'를 사용하여 데이터베이스에서 판매 거래에 대한 결제 정보 검색
-- 'product_images', 'sellings' 및 'deals' 테이블에서 특정 필드를 선택하고 지정된 열을 기반으로 JOIN하는 'queryRunner'를 사용하여 SQL 쿼리를 실행시킴 
-- 쿼리는 제공된 'dealNumber'를 기반으로 결과를 필터링함
-- 쿼리가 성공하면 트랜잭션을 커밋하고 검색된 데이터를 반환하고 렇지 않으면 트랜잭션을 롤백하고 "DATABASE_ERROR" 메시지와 DatabaseError를 발생시킴 <br>
-
-**구매 입찰 완료**<br>
-: 구매 입찰 완료 시 사용되는 API
-- 데이터베이스의 구매 입찰에 addressId를 업데이트하도록 설계
-- userId 및 biddingId를 기반으로 데이터베이스의 buyings 테이블에서 address_id필드 업데이트 <br>
-
-**판매 입찰 완료**<br>
-: 판매 입찰 완료 시 사용되는 API
-- 데이터베이스의 특정 판매 거래 입찰에 대한 카드 및 계좌 번호 ID를 업데이트하도록 설계
-- userId 및 biddingId를 기반으로 데이터베이스의 sellings 테이블에서 card_number_id 및 account_number_id 필드를 업데이트하기 위해 queryRunner를 사용하여 두 개의 별도 SQL 쿼리를 실행시킴
-- 쿼리가 성공적으로 완료되면 함수는 트랜잭션을 커밋하고, 그렇지 않은 경우 트랜잭션을 롤백하고 "DATABASE_ERROR" 메시지와 함께 DatabaseError를 발생시킴
-  <br>
   
   </div>
 </details>
