@@ -1,10 +1,5 @@
 # 44-2nd-Dream-backend 경매 플랫폼 제작 프로젝트
 
-박세익<br>
-장다희([**Github**](https://github.com/walwald), [회고록](https://walwaldev.tistory.com/57))<br>
-김민서<br>
-송석준<br>
-<br>
 > **위코드 44기 2차 프로젝트 <br>
 c2c 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 거래 플랫폼 웹사이트 제작<br>
 [결과물 시연 영상 링크](https://www.youtube.com/watch?v=UFuS91VcVp8)**
@@ -13,7 +8,7 @@ c2c 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 c2c �
 개발은 초기 세팅부터 전부 직접 구현했으며, 아래 데모 영상에서 보이는 부분은 모두 백앤드와 연결하여 실제 사용할 수 있는 서비스 수준으로 개발한 것입니다.*
 
 
-## 📍프로젝트 기간 & 인원
+## 1.프로젝트 기간 & 인원
 * 프로젝트 기간: 2주 (2023.04.20 ~ 2023.05.04)   
 * 개발 인원:  
   `Frontend`: 최선영(Product Manager), 김영운, 조건호 <br>
@@ -24,39 +19,37 @@ c2c 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 c2c �
 <br>
 
 
-## 📍사용 기술
+## 2.사용 기술
 
 * BackEnd   
 
- |JavaScript|Node.js|Jest|MySql|Rest|Prettier|Docker|AWS|
-|---|---|---|---|---|---|---|---|
-|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="65" height="65" /></div>| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/nginx-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/jest-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/restapi-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/prettier-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/docker-icon.svg" alt="icon" width="65" height="65" /></div>|<div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div>|
+ JavaScript
+ Node.js
+ Jest
+ MySql
+ Rest
+ Prettier
+ Docker
+ AWS
+ 
 <br>
 
 * 협업 <br><br>
+  Git & Git hub
+  Trello
+  Postman
+  Slack
+  Notion
 
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <br>
-<img src="https://img.shields.io/badge/trello-0055cc?style=for-the-badge&logo=trello&logoColor=yellow"> <br>
-<img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> <br>
-<img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=Slack&logoColor=wihte"> <br>
-<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white"> <br>
 <br>
 
 
- ## 📍[ERD](https://dbdiagram.io/d/64426bdf6b31947051f9b394)
+ ## 3.[ERD](https://dbdiagram.io/d/64426bdf6b31947051f9b394)
  > User가 구매자이자 판매자가 될 수 있으며, 하나의 Product에 구매 입찰과 판매 입찰이 동시에 이루어진다는 점에 주안점을 두고 데이터베이스 모델을 구축하였습니다. <br><br>
 ![DREAM (3)](https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/120387100/b18561e6-0888-4aaa-8eaa-452122d73e11)
 
-
- ## 📍[Postman](https://documenter.getpostman.com/view/26858291/2s93eWzskR)
-> Postman의 Documentation을 프로젝트 진행 시 프론트엔드와의 소통 및 협업 도구로 활용하였습니다. <br><br>
-<img width="1512" alt="스크린샷 2023-05-18 23 35 50" src="https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/120387100/3bff3e11-24d2-495c-81e4-f815da108948"><br>
-
- <br>
  
-
- 
- ## 📍핵심 기능
+ ## 4.핵심 기능
  
  > c2c 경매 플랫폼으로서 갖추어야 할 필수 기능들을 구현 하였습니다.
  
@@ -68,8 +61,6 @@ c2c 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 c2c �
  **회원가입(Kakao Social Login)**<br>
  **로그인(Kakao Social Login)**
 
-https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/acdfa770-73bd-4775-a10a-e924592faed4
-
  : KaKao에서 제공하는 API를 활용하여 user 회원 가입, 로그인 기능 구현
  
  <br>
@@ -80,8 +71,6 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/a
 
 **상품 리스트 & 필터**
 
-![image](https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/120387100/f3ea9ebf-8142-414a-9436-07e7f7494f08)
-
 : query parameter로 필터 및 정렬 조건을 전달 받아, 그에 따라 상품 리스트를 응답하는 API
 -  좋아요 많은 순, 즉시 구매가 순, 즉시 판매가 순, 리뷰 순, 프리미엄 가격 순으로 정렬 가능
 -  상품 카테고리, 사용 연령, 난이도로 필터 가능 
@@ -89,8 +78,6 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/a
 <br>
 
 **상품 상세 정보** 
-
-![image](https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/120387100/34ac8dc6-1671-44df-92c8-8c3ef5de0c75)
 
 : path parameter로 productId를 전달 받아, 해당하는 product의 상세 정보를 응답하는 API.
 
@@ -110,25 +97,21 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/a
  **구매 입찰**
  
 
-https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/e8887c3d-0b93-4e28-b57c-53c8156b11bd
 
 
  **즉시 구매**
   
 
-https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/0837d058-7d15-4b29-8b2f-5e2a775153c5
 
  
  **판매 입찰**
  
 
-https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/8e57fdb7-82eb-4eeb-8f2c-d52bc1164ace
 
 
  **즉시 판매**
  
 
-https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/0de776fd-5559-4882-b4da-bff2eea4cd7d
 
 **입찰 API**
 
@@ -154,7 +137,6 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/0
  ### Search
  
  
-https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/072f8bfd-b3f0-483a-9115-a07871b613c1
  
  **상품 검색**
  
@@ -171,7 +153,6 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/0
 
  ### Likes
 
-https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/e7475a80-6037-4691-aa5d-7af24bbb8110
 
 **관심상품 등록/삭제**<br>
 : 관심상품 등록/삭제 API
@@ -188,7 +169,6 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/e
  
  ### Reviews
 
-https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4a612806-8010-4162-8d5b-fa2b8bff27c5
 
  **리뷰 게시**<br>
  
@@ -216,9 +196,6 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
   ***
   
  ### Payment
- ![image](https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/120387100/29151875-568c-4c0c-b3f2-e4600cfbc1e3)
-
-![image](https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/120387100/5e3806a3-0a6b-4d89-b17a-339938c1ac92)
 
 
 **회원 주소 저장**<br>
@@ -261,10 +238,15 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
   </div>
 </details>
 
+<br>
+
+- [Postman](https://documenter.getpostman.com/view/26858291/2s93eWzskR): 프로젝트 진행 시 Postman의 Documentation을 활용하여 프론트엔드와 소통하였습니다.
+client가 사용한 모든 API를 Postman에서 확인할 수 있습니다.
+
 ***
 
- ## 📍핵심 트러블 슈팅
- **1. 상품 상세 정보 호출 API - SELECT 쿼리문의 오사용**
+ ## 5.핵심 트러블 슈팅
+ #### 1. 상품 상세 정보 호출 API - SELECT 쿼리문의 오사용
  - 상품 상제 정보 호출 API 작성 후 API가 잘 실행되는지 확인하는 과정에서 각 테이블에 데이터를 1개씩만 생성하고 테스트하여, SELECT 문 내 suq-query가 2개 이상의 row를 반환한다는 사실을 발견하지 못했습니다.
  
     <details>
@@ -508,7 +490,7 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
   
   <br>
   
- **2. 경매 입찰 API - API class화**
+ #### 2. 경매 입찰 API - API class화
  - '구매 입찰'과 '판매 입찰'을 모두 처리할 수 있는 하나의 API를 작성하고자 했습니다.
  - 처음에는 함수와 객체를 활용하여 경우에 따라 적절한 값을 객체의 property에서 불러와 함수의 인자로 사용하고자 했습니다.
  - 그러나 각 경우에 따라 달라져야 하는 변수의 수가 많아, 다수의 객체를 참조하게 되면서 코드의 가독성이 떨어지고 복잡성이 높아진다고 판단하였습니다.
@@ -782,8 +764,13 @@ https://github.com/wecode-bootcamp-korea/44-2nd-Dream-backend/assets/119482288/4
 <br>
   
   ***
-    
- ## 📍Reference
+
+ ## 7.느낀점/회고
+ > 2차 프로젝트 회고록: https://walwaldev.tistory.com/57
+
+  <br>
+  
+ ## Reference
 
 - 이 프로젝트는 [KREAM](https://kream.co.kr/) 사이트를 참조하여 학습목적으로 만들었습니다.
 - 실무수준의 프로젝트이지만 학습용으로 만들었기 때문에 이 코드를 활용하여 이득을 취하거나 무단 배포할 경우 법적으로 문제될 수 있습니다.
