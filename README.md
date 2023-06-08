@@ -103,26 +103,32 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
  
  <br>
 
- **6. 상품 검색** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/searchDao.js#L4)
+ **6. 누적 입찰 내역 조회** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/4de7048200206a9cf5147989b6d377b1936fae4a/API/services/bidService.js#L6)
+
+  - 상품별 누적 입찰 정보를 전달하여, 상세 페이지에서 그래프로 표현될 수 있도록 했습니다.
+  
+  <br>
+  
+ **7. 상품 검색** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/searchDao.js#L4)
  
  - keyword에 상품명 또는 basic, building, movie, car 등의 카테고리 명 기입 시 검색됩니다.
  
   <br>
   
- **7. 인기 검색어**
+ **8. 인기 검색어**
  - 누적 인기검색어를 조회하는 API입니다.
  - 검색 시 키워드별 검색량이 누적됩니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/searchDao.js#L32)
  - 검색어 데이터를 역대 검색량 순으로 정렬하여 상위 10개의 검색어를 응답합니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/searchDao.js#L48)
 
   <br>
   
-**8. 관심상품 등록/삭제** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/services/likeService.js#L3)
+**9. 관심상품 등록/삭제** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/services/likeService.js#L3)
 - path parameter로 productId를 받아 해당 유저의 관심상품으로 등록합니다.
 - 동일한 product와 동일한 user에 대해 API가 재실행될 경우 관심상품에서 삭제합니다.
   
   <br>
 
- **9. 리뷰 CRUD**
+ **10. 리뷰 CRUD**
  
  - 생성: multer-3와 multer를 이용하여 서버 측에서 AWS의 S3에 사진을 올려 사진 리뷰 게시가 가능하도록 했습니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/routes/reviewRouter.js#L9)
  - 조회: 리뷰 조회 시 productId를 사용하여 데이터베이스에서 제품에 대한 리뷰를 검색합니다. users 및 review_images 테이블과 LEFT JOIN 하여 데이터를 반환합니다. 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/reviewDao.js#L5)
@@ -131,7 +137,7 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
 
   <br>
   
-  **10. 결제/정산 완료 상태 업데이트** 📌코드 확인 - [판매](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/paymentDao.js#L100), [구매](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/paymentDao.js#L169)
+  **11. 결제/정산 완료 상태 업데이트** 📌코드 확인 - [판매](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/paymentDao.js#L100), [구매](https://github.com/walwald/44-2nd-Dream-backend/blob/a6898307b9601db0e41209f16a1fce26dc5efea4/API/models/paymentDao.js#L169)
   - 즉시 구매 후 client가 결제 완료 요청을 보내면, 거래 상태를 `결제 완료`로 업데이트합니다. 
   - 즉시 판매가 체결되면 구매자의 `결제 대기`로 상태를 업데이트 합니다.
   
