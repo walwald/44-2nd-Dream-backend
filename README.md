@@ -21,26 +21,27 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
 
 ## 2. 사용 기술
 
-* BackEnd   
+* BackEnd <br><br>
 
- JavaScript
- Node.js v16.15
- express 4.18
- Jest 29.5
- MySql 5.7
- Rest
- Prettier
- Docker
- AWS
+ JavaScript <br>
+ Node.js v16.15 <br>
+ express 4.18 <br>
+ Jest 29.5 <br>
+ MySql 5.7 <br>
+ Rest <br>
+ Prettier <br>
+ Docker <br>
+ AWS <br>
  
 <br>
 
 * 협업 <br><br>
-  Git & Git hub
-  Trello
-  Postman
-  Slack
-  Notion
+
+  Git & Git hub <br>
+  Trello <br>
+  Postman <br>
+  Slack <br>
+  Notion <br>
 
 <br>
 
@@ -80,50 +81,26 @@ c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 �
 
 <br>
 
- **구매 입찰**
- 
+**4. 입찰** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a51ad73eea353c5395936e41337ced2c525ba9d9/API/models/bidDao.js#L126)
 
-
-
- **즉시 구매**
-  
-
-
- 
- **판매 입찰**
- 
-
-
-
- **즉시 판매**
- 
-
-
-**4. 입찰**
-
-:[상품 productId, 구매/판매 중 해당하는 입찰 유형, 입찰 금액, 입찰 마감 기한]을 request의 body로 전달받아 입찰 내역이 기록되는 API 입니다.
-- userId는 token의 payload에 저장된 정보를 이용함.
-- 입찰 금액에 따라 즉시 거래가 성사 되기도 함.
-- 즉시 거래가 성사되는 경우, transaction을 사용하여 [거래 건 생성, 입찰 상태를 낙찰로 변경, 거래 상대방의 입찰 내역도 낙찰 상태로 변경] 등의 처리가 동시에 이루어지도록 함.
-- 해당 user와 상품에 대해 기존 입찰 내역이 존재할 경우 '금액' 혹은 '입찰 기한'이 변경되도록 하여, 입찰 건 생성 외에도 입찰 내역 업데이트에 본 API가 사용될 수 있도록 함.
+- [상품 productId, 구매/판매 중 해당하는 입찰 유형, 입찰 금액, 입찰 마감 기한]을 request의 body로 전달받아 입찰 내역이 기록되는 API입니다.
+- [구매 입찰, 즉시 구매, 판매 입찰, 즉시 판매] 네 가지 경우에 모두 사용할 수 있습니다.
+- userId는 token의 payload에 저장된 정보를 이용합니다.
+- 입찰 금액에 따라 즉시 거래가 성사 될 수 있습니다.
+- 즉시 거래가 성사되는 경우, transaction을 사용하여 [거래 건 생성, 입찰 상태를 낙찰로 변경, 거래 상대방의 입찰 내역도 낙찰 상태로 변경] 등의 처리가 동시에 이루어지도록 했습니다.
+- 해당 user와 상품에 대해 기존 입찰 내역이 존재할 경우 '금액' 혹은 '입찰 기한'이 변경되도록 하여, 입찰 건 생성 외에도 입찰 내역 업데이트에 본 API가 사용될 수 있습니다.
 <br>
  
-**입찰 상세 내역 조회 API**
+**5. 입찰 상세 내역 조회** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/a51ad73eea353c5395936e41337ced2c525ba9d9/API/services/bidService.js#L36)
 
-: 입찰 금액 및 기한 입력 후 이어지는 개인 정보 입력 페이지에서 입찰 내역 확인 용으로 요청되는 입찰 상세 정보 조회 API.
-- path parameter로 상품의 productId를, query parameter로 구매/판매 등의 입찰 유형을 전달 받음. userId는 token의 payload에 저장된 정보를 이용함.
-- 거래 성사 여부에 따라 dealId(거래 Id)와 dealNumber(고유 거래 번호) 전달 여부가 달라짐. 거래가 성사되지 않고 입찰만 완료된 경우 null 값으로로 전달.
-- 상품에 대한 기본 정보와, 입찰 건의 Id, 입찰 금액, 입찰 기한, 수수료 금액 등 전달함.
+- 입찰 금액 및 기한 입력 후 이어지는 개인 정보 입력 페이지에서 입찰 내역 확인을 위한 입찰 상세 정보 조회 API입니다.
+- path parameter로 상품의 productId를, query parameter로 구매/판매 등의 입찰 유형을 전달 받습니다. userId는 token의 payload에 저장된 정보를 이용합니다.
+- 거래 성사 여부에 따라 dealId(거래 Id)와 dealNumber(고유 거래 번호) 전달 여부가 달라집니다. 거래가 성사되지 않고 입찰만 완료된 경우 두 값을 null로 전달합니다.
+- 상품에 대한 기본 정보와, 입찰 건의 Id, 입찰 금액, 입찰 기한, 수수료 금액 등을 전달합니다.
  
  
  <br>
- 
- ***
- 
- ### Search
- 
- 
- 
+
  **상품 검색**
  
  : 상품 검색 기능 API
