@@ -1,7 +1,7 @@
-# 44-2nd-Dream-backend 경매 플랫폼 제작 프로젝트
+# Dream - Backend
 
 > **위코드 44기 2차 프로젝트 <br>
-c2c 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 거래 플랫폼 웹사이트 제작<br>
+c2c 명품 경매 플랫폼 KREAM을 모델링하여 레고 상품 c2c 경매 플랫폼 웹사이트 제작<br>
 [결과물 시연 영상 링크](https://www.youtube.com/watch?v=UFuS91VcVp8)**
 
 > **짧은 프로젝트 기간동안 개발에 집중해야 하므로 디자인/기획 부분만 클론했습니다.<br>
@@ -24,9 +24,10 @@ c2c 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 c2c �
 * BackEnd   
 
  JavaScript
- Node.js
- Jest
- MySql
+ Node.js v16.15
+ express 4.18
+ Jest 29.5
+ MySql 5.7
  Rest
  Prettier
  Docker
@@ -57,43 +58,28 @@ c2c 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 c2c �
 <summary>핵심 기능 설명 펼치기</summary>
 <div markdown="1">
  
- ### Users
- **회원가입(Kakao Social Login)**<br>
- **로그인(Kakao Social Login)**
-
- : KaKao에서 제공하는 API를 활용하여 user 회원 가입, 로그인 기능 구현
+ **1. 회원가입/로그인(Kakao Social Login)** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/669cc7d2ba9331583cc76f30c1f8cf3e2cda6e40/API/services/userService.js#L6)
+ - KaKao에서 제공하는 API를 활용하여 user 회원 가입, 로그인 기능을 구현했습니다.
  
  <br>
  
- ***
- 
-### Products
-
-**상품 리스트 & 필터**
-
-: query parameter로 필터 및 정렬 조건을 전달 받아, 그에 따라 상품 리스트를 응답하는 API
--  좋아요 많은 순, 즉시 구매가 순, 즉시 판매가 순, 리뷰 순, 프리미엄 가격 순으로 정렬 가능
--  상품 카테고리, 사용 연령, 난이도로 필터 가능 
+** 2. 상품 리스트 (필터/정렬)** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/669cc7d2ba9331583cc76f30c1f8cf3e2cda6e40/API/models/productDao.js#L57)
+  
+- query parameter로 필터 및 정렬 조건을 전달 받아, 그에 따라 상품 리스트를 응답하는 API입니다.
+- 좋아요 많은 순, 즉시 구매가 순, 즉시 판매가 순, 리뷰 순, 프리미엄 가격 순으로 정렬이 가능합니다.
+- 상품 카테고리, 사용 연령, 난이도로 필터 가능합니다.
 
 <br>
 
-**상품 상세 정보** 
+**3. 상품 상세 정보** 📌[코드 확인](https://github.com/walwald/44-2nd-Dream-backend/blob/669cc7d2ba9331583cc76f30c1f8cf3e2cda6e40/API/services/productService.js#L5)
 
-: path parameter로 productId를 전달 받아, 해당하는 product의 상세 정보를 응답하는 API.
-
-- 상품명, 모델넘버, 카테고리, 좋아요 수 등 기본 정보 뿐만 아니라, 즉시 구매가, 즉시 판매가, 최근 거래가, 프리미엄 퍼센트 등의 경매가 관련 데이터도 함께 전달
-- 즉시 구매가는 판매 입찰된 금액 중 가장 낮은 금액
-- 즉시 판매가는 구매 입찰된 금액 중 가장 높은 금액
-- 최근 거래가는 체결 거래 중 가장 최신 거래의 거래 성사 가격
-- 프리미엄 퍼센트는 상품 발매가와 최근 거래가의 비율로 계산
+- path parameter로 productId를 전달 받아, 해당하는 product의 상세 정보를 응답하는 API입니다.
+- 상품명, 모델넘버, 카테고리, 좋아요 수 등 기본 정보 뿐만 아니라, 즉시 구매가, 즉시 판매가, 최근 거래가, 프리미엄 퍼센트 등의 경매가 관련 데이터도 함께 전달합니다.
+- `즉시 구매가`는 판매 입찰된 금액 중 가장 낮은 금액, `즉시 판매가`는 구매 입찰된 금액 중 가장 높은 금액, `최근 거래가`는 체결 거래 중 가장 최신 거래의 거래 성사 가격입니다.
+- `프리미엄 퍼센트`는 상품 발매가와 최근 거래가의 비율로 계산됩니다.
 
 <br>
 
-***
-
- ### Bid
-
- 
  **구매 입찰**
  
 
@@ -113,9 +99,9 @@ c2c 명품 경매 거래 플랫폼 KREAM을 모델링하여 레고 상품 c2c �
  
 
 
-**입찰 API**
+**4. 입찰**
 
-:[상품 productId, 구매/판매 중 해당하는 입찰 유형, 입찰 금액, 입찰 마감 기한]을 request의 body로 전달받아 입찰 내역이 기록되는 API. 
+:[상품 productId, 구매/판매 중 해당하는 입찰 유형, 입찰 금액, 입찰 마감 기한]을 request의 body로 전달받아 입찰 내역이 기록되는 API 입니다.
 - userId는 token의 payload에 저장된 정보를 이용함.
 - 입찰 금액에 따라 즉시 거래가 성사 되기도 함.
 - 즉시 거래가 성사되는 경우, transaction을 사용하여 [거래 건 생성, 입찰 상태를 낙찰로 변경, 거래 상대방의 입찰 내역도 낙찰 상태로 변경] 등의 처리가 동시에 이루어지도록 함.
